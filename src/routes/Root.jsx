@@ -7,6 +7,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { router } from "../common/router";
+import { Logout } from "@mui/icons-material";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { FirebaseAuth } from "../firebase/config";
 
 const drawerWidth = 241;
 
@@ -20,9 +23,24 @@ function Root() {
 
   // for displaying selected option name in appbar
   const currentRoute = routes.find(route => route.path ? "/" + route.path === location.pathname : location.pathname === "/")
-  console.log("🚀 ~ file: Root.jsx:23 ~ Root ~ currentRoute:", currentRoute)
+  // console.log("🚀 ~ file: Root.jsx:23 ~ Root ~ currentRoute:", currentRoute)
 
-  console.log("first", routes)
+  // Logout user
+  const [signOut, loading, error] = useSignOut(FirebaseAuth);
+
+  // Retrieve and monitor the authentication state from Firebase
+  const [user, authStateLoading, authStateError] = useAuthState(FirebaseAuth);
+  console.log("🚀 ~ file: Root.jsx:33 ~ Root ~ user:", user)
+
+  
+  const handleLogOut = async () => {
+    const success = await signOut();
+    if (success) {
+      alert('You have logged out!');
+    }
+  }
+
+  // console.log("first", routes)
   return (
     <Box sx={{ display: "flex" }}>
       {/* Right top bar */}
@@ -57,14 +75,23 @@ function Root() {
                 LinkComponent={Link}
                 to={route.path ? route.path : "/"}>
                 <ListItemIcon>
-                  {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {/* {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                  {<route.icon />}
                 </ListItemIcon>
                 <ListItemText primary={route.name} />
               </ListItemButton>
             </ListItem>
           ))}
+          {/* Logout button */}
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLogOut}>
+              <ListItemIcon><Logout></Logout></ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
         </List>
-        {/* <Divider />
+        {/* 
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding>
@@ -85,20 +112,6 @@ function Root() {
       >
         <Toolbar />
         <Outlet />
-        {/* <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography> */}
       </Box>
     </Box>
   )
