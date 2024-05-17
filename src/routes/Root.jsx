@@ -3,8 +3,6 @@ import {
   ListItemButton, ListItemIcon, ListItemText,
   Toolbar, Typography
 } from "@mui/material";
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { router } from "../common/router";
 import { Logout } from "@mui/icons-material";
@@ -37,6 +35,7 @@ function Root() {
     const success = await signOut();
     if (success) {
       alert('You have logged out!');
+      // TODO: redirect to login page after logged out successfully
     }
   }
 
@@ -44,7 +43,7 @@ function Root() {
   return (
     <Box sx={{ display: "flex" }}>
       {/* Right top bar */}
-      <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
+      <AppBar sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}>
         <Toolbar>
           <Typography component="p" variant="h6">
             {/* Vcare Facility */}
@@ -91,19 +90,6 @@ function Root() {
             </ListItemButton>
           </ListItem>
         </List>
-        {/* 
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
 
       <Box

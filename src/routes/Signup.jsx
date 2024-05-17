@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, Container, TextField, Typography } from "@mui/material"
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { FirebaseAuth } from "../firebase/config";
 import { useEffect } from "react";
@@ -33,46 +33,46 @@ const Signup = () => {
     }, [user, navigate])
 
     return (
-        <Container maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
-                <Typography component="h1" variant="h5">
-                    Signup
-                </Typography>
+        <Container sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: '100vh',
+        }}>
+            <Card sx={{ maxWidth: "480px" }}>
+                <CardContent>
+                    <Box sx={{ textAlign: "center" }}>
+                        <Typography component="h1" variant="h5">
+                            Signup
+                        </Typography>
 
-                <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        name="email"
-                        label="Email Address"
-                    />
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        name="password"
-                        label="Password"
-                    />
+                        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                name="email"
+                                label="Email Address"
+                            />
+                            <TextField
+                                margin="normal"
+                                fullWidth
+                                name="password"
+                                label="Password"
+                            />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Signup
-                    </Button>
-
-                </Box>
-
-            </Box>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Signup
+                            </Button>
+                        </Box>
+                    </Box>
+                </CardContent>
+            </Card>
         </Container>
     )
 }
