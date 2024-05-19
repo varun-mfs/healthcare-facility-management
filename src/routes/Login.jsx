@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent, Container, Divider, TextField, Typography } from "@mui/material"
 import { FirebaseAuth } from "../firebase/config";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from "react-firebase-hooks/auth";
 
 const Login = () => {
@@ -84,6 +84,10 @@ const Login = () => {
                             >
                                 Login with Google
                             </Button>
+                            <Link to="/register" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+
                         </Box>
                     </Box>
                 </CardContent>

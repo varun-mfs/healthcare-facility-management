@@ -2,7 +2,7 @@ import { Box, Button, Card, CardContent, Container, TextField, Typography } from
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { FirebaseAuth } from "../firebase/config";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [
@@ -69,6 +69,10 @@ const Signup = () => {
                             >
                                 Signup
                             </Button>
+                            <Link to="/login" variant="inherit">
+                                {"Already have an account? Login"}
+                            </Link>
+
                         </Box>
                     </Box>
                 </CardContent>
