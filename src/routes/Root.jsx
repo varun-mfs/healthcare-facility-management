@@ -3,11 +3,12 @@ import {
   ListItemButton, ListItemIcon, ListItemText,
   Toolbar, Typography
 } from "@mui/material";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { router } from "../common/router";
 import { Logout } from "@mui/icons-material";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { FirebaseAuth } from "../firebase/config";
+import { useEffect } from "react";
 
 const drawerWidth = 241;
 
@@ -30,7 +31,6 @@ function Root() {
   const [user, authStateLoading, authStateError] = useAuthState(FirebaseAuth);
   console.log("🚀 ~ file: Root.jsx:33 ~ Root ~ user:", user)
 
-  
   const handleLogOut = async () => {
     const success = await signOut();
     if (success) {

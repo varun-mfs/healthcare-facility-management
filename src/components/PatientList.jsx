@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 
-const PatientList = ({ setIsModalOpen, patients }) => {
+const PatientList = ({ patients, onEdit, onDelete}) => {
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -12,14 +12,19 @@ const PatientList = ({ setIsModalOpen, patients }) => {
         setSearchTerm(event.target.value);
     };
 
-    const handleEdit = (index) => {
+    const handleEdit = (patient) => {
+        console.log("🚀 ~ file: PatientList.jsx:16 ~ handleEdit ~ patient:", patient);
         // Handle edit functionality here
-        console.log('Edit patient:', filteredPatients[index]);
+        onEdit(patient);
+        // console.log('Edit patient:', filteredPatients[index]);
     };
 
-    const handleDelete = (index) => {
+    const handleDelete = (patient) => {
+        console.log("🚀 ~ file: PatientList.jsx:23 ~ handleDelete ~ patient:", patient);
         // Handle delete functionality here
-        console.log('Delete patient:', filteredPatients[index]);
+        onDelete(patient)
+        console.log("***********patients", patients);
+        // console.log('Delete patient:', filteredPatients[patient]);
     };
 
     const filteredPatients = patients.filter((patient) =>
@@ -41,7 +46,7 @@ const PatientList = ({ setIsModalOpen, patients }) => {
                 </Grid>
                 <Grid item>
                     <Button variant="contained" color="primary"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => onEdit()}
                     >
                         Add Patient
                     </Button>
@@ -68,9 +73,9 @@ const PatientList = ({ setIsModalOpen, patients }) => {
                                 <TableCell>{patient.phone}</TableCell>
                                 <TableCell>{patient.medicalHistory}</TableCell>
                                 <TableCell>
-                                    <Button sx={{ marginRight: "5px" }} title='Add Appointment' variant="outlined" color="info" onClick={() => handleEdit(index)}><AddAlarmIcon /></Button>
-                                    <Button sx={{ marginRight: "5px" }} title='Edit Patient' variant="outlined" color="secondary" onClick={() => handleEdit(index)}><EditIcon /></Button>
-                                    <Button variant="outlined" title='Delete Patient' color="error" onClick={() => handleDelete(index)}><DeleteIcon /></Button>
+                                    <Button sx={{ marginRight: "5px" }} title='Add Appointment' variant="outlined" color="info" ><AddAlarmIcon /></Button>
+                                    <Button sx={{ marginRight: "5px" }} title='Edit Patient' variant="outlined" color="secondary" onClick={() => handleEdit(patient)}><EditIcon /></Button>
+                                    <Button variant="outlined" title='Delete Patient' color="error" onClick={() => handleDelete(patient)}><DeleteIcon /></Button>
                                 </TableCell>
                             </TableRow>
                         ))}

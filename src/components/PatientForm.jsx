@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Button,
@@ -10,7 +10,7 @@ import {
   Grid
 } from '@mui/material';
 
-const PatientForm = ({ open, handleClose, handleAddPatient }) => {
+const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData }) => {
   const [formData, setFormData] = useState({
     name: '',
     dateOfBirth: '',
@@ -20,6 +20,20 @@ const PatientForm = ({ open, handleClose, handleAddPatient }) => {
   });
 
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (patientData) {
+      setFormData(patientData);
+    } else {
+      setFormData({
+        name: '',
+        dateOfBirth: '',
+        email: '',
+        phone: '',
+        medicalHistory: '',
+      });
+    }
+  }, [patientData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,13 +56,13 @@ const PatientForm = ({ open, handleClose, handleAddPatient }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      handleAddPatient(formData);
+      handleAddOrEditPatient(formData);
       handleClose();
     }
   };
 
   return (
-    <Container sx={{padding: "110px"}}>
+    <Container sx={{ padding: "110px" }}>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add New Patient</DialogTitle>
         <DialogContent>
