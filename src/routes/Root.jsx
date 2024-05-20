@@ -49,6 +49,7 @@ function Root() {
             {/* Vcare Facility */}
             {currentRoute.name}
           </Typography>
+          {/* TODO: show logged in user name (and info tab here ??) */}
         </Toolbar>
       </AppBar>
       {/* Left drawer menu */}
