@@ -25,6 +25,8 @@ const Login = () => {
         signInWithEmailAndPassword(email, password)
     }
 
+    console.log("first INSIDE LOGIN!")
+
     useEffect(() => {
         if (loading) {
             return <p>Loading...</p>;

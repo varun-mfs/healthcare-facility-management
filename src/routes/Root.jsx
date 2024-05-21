@@ -27,6 +27,8 @@ function Root() {
   // Logout user
   const [signOut, loading, error] = useSignOut(FirebaseAuth);
 
+  const navigate = useNavigate();
+
   // Retrieve and monitor the authentication state from Firebase
   const [user, authStateLoading, authStateError] = useAuthState(FirebaseAuth);
   console.log("🚀 ~ file: Root.jsx:33 ~ Root ~ user:", user)
@@ -36,6 +38,7 @@ function Root() {
     if (success) {
       alert('You have logged out!');
       // TODO: redirect to login page after logged out successfully
+      navigate("/");
     }
   }
 
