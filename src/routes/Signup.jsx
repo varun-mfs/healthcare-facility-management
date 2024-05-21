@@ -55,6 +55,7 @@ const Signup = () => {
                                 label="Email Address"
                             />
                             <TextField
+                                type="password"
                                 margin="normal"
                                 fullWidth
                                 name="password"
