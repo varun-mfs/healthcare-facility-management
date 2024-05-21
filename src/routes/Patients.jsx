@@ -10,7 +10,7 @@ function Patient() {
       name: 'Priya Patel',
       dateOfBirth: '1987-10-03',
       email: 'priya.patel@qmail.com',
-      phone: '99999 88800',
+      phone: '9999988800',
       medicalHistory: 'Diabetes',
     },
     {
@@ -18,7 +18,7 @@ function Patient() {
       name: 'Amit Kumar',
       dateOfBirth: '1975-01-23',
       email: 'amit.kumar@gmail.com',
-      phone: '99999 00088',
+      phone: '9999900088',
       medicalHistory: 'Allergic to penicillin.',
     },
     {
@@ -26,7 +26,7 @@ function Patient() {
       name: 'Sneha Singh',
       dateOfBirth: '1995-05-04',
       email: 'sneha.singh@example.com',
-      phone: '99999 77788',
+      phone: '9999977788',
       medicalHistory: 'Seasonal allergies',
     },
     {
@@ -34,7 +34,7 @@ function Patient() {
       name: 'Anjali Sharma',
       dateOfBirth: '1982-09-09',
       email: 'anjali.sharma@example.com',
-      phone: '99999 88888',
+      phone: '9999988888',
       medicalHistory: 'Thyroid disorder',
     },
     {
@@ -42,7 +42,7 @@ function Patient() {
       name: 'Rajesh Gupta',
       dateOfBirth: '1978-05-12',
       email: 'rajesh.gupta@test.com',
-      phone: '99999 77888',
+      phone: '9999977888',
       medicalHistory: 'Mouth ulcer',
     },
     {
@@ -50,7 +50,7 @@ function Patient() {
       name: 'Preeti Singh',
       dateOfBirth: '1990-08-06',
       email: 'preeti.singh@example.com',
-      phone: '99999 11888',
+      phone: '9999911888',
       medicalHistory: 'Anemia',
     },
     {
@@ -58,7 +58,7 @@ function Patient() {
       name: 'Sanjay Patel',
       dateOfBirth: '1989-11-02',
       email: 'sanjay.patel@example.com',
-      phone: '99999 88888',
+      phone: '9999988888',
       medicalHistory: 'Migraine',
     },
     {
@@ -66,7 +66,7 @@ function Patient() {
       name: 'Shreya Das',
       dateOfBirth: '1993-02-07',
       email: 'shreya.das@example.com',
-      phone: '99999 88888',
+      phone: '9999988888',
       medicalHistory: 'No significant medical history.',
     },
     // Add more patient data as needed
@@ -77,6 +77,7 @@ function Patient() {
   console.log("🚀 ~ file: Patients.jsx:69 ~ Patient ~ currentPatient:", currentPatient)
 
   const handleAddOrEditPatient = (patient) => {
+    patient.id = patients[patients.length-1].id+1;    // increment id of patient
     if (!currentPatient) {
       // Add patient
       setPatients((prevPatients) => [...prevPatients, patient]);

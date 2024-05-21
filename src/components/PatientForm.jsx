@@ -64,7 +64,7 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
   return (
     <Container sx={{ padding: "110px" }}>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New Patient</DialogTitle>
+        <DialogTitle> {patientData ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -142,7 +142,7 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
         </DialogContent>
         <DialogActions>
           <Button variant='contained' onClick={handleClose} color="warning">Cancel</Button>
-          <Button variant='contained' onClick={handleSubmit} color="primary">Add Patient</Button>
+          <Button variant='contained' onClick={handleSubmit} color="primary">{patientData ? 'Edit Patient' : 'Add Patient'}</Button>
         </DialogActions>
       </Dialog>
     </Container>
