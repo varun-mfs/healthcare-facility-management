@@ -63,6 +63,7 @@ const Login = () => {
                                 label="Email Address"
                             />
                             <TextField
+                                type="password"
                                 margin="normal"
                                 fullWidth
                                 name="password"
