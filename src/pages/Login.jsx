@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent, Container, Divider, TextField, Typography } from "@mui/material"
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignInWithEmailAndPassword, useSignInWithGoogleAuth } from "../features/authentication/hooks";
+import { useAuthContext, useSignInWithEmailAndPassword, useSignInWithGoogleAuth } from "../features/authentication/hooks";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,15 +14,19 @@ const Login = () => {
 
     const { signInWithGoogle, gUser, gLoading, gError } = useSignInWithGoogleAuth();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const { user: loggedInUser } = useAuthContext();
+    console.log("🚀 ~ file: Login.jsx:18 ~ Login ~ loggedInUser:", loggedInUser)
+    // if (loggedInUser)
 
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        const handleSubmit = (e) => {
+            e.preventDefault();
 
-        console.log(email, password)
-        signInWithEmailAndPassword(email, password)
-    }
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+
+            console.log(email, password)
+            signInWithEmailAndPassword(email, password)
+        }
 
     console.log("first INSIDE LOGIN!")
 

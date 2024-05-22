@@ -39,7 +39,7 @@ function Root() {
     if (success) {
       alert('You have logged out!');
       // TODO: redirect to login page after logged out successfully
-      navigate("/");
+      navigate("/login");
     }
   }
 

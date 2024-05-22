@@ -6,12 +6,12 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility'
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Signup from '../pages/Signup.jsx'
 import Login from '../pages/Login.jsx'
-import RequireAuth from '../shared/components/RequireAuth.jsx'
+import { CheckAuth } from '../shared/components/'
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RequireAuth><Root /></RequireAuth>,
+    element: <CheckAuth><Root /></CheckAuth>,
     children: [
       {
         id: 1,
@@ -36,10 +36,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "register/",
-    element: <Signup />,
+    element: <CheckAuth><Signup /></CheckAuth>,
   },
   {
     path: "login/",
-    element: <Login />,
+    element: <CheckAuth><Login /></CheckAuth>,
   },
 ])
