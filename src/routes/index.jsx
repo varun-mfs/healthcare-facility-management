@@ -6,7 +6,7 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility'
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import Signup from '../pages/Signup.jsx'
 import Login from '../pages/Login.jsx'
-import RequireAuth from '../shared/RequireAuth.jsx'
+import RequireAuth from '../shared/components/RequireAuth.jsx'
 
 export const router = createBrowserRouter([
   {

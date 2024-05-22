@@ -5,10 +5,10 @@ import {
 } from "@mui/material";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { router } from "../routes/index";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Logout } from "@mui/icons-material";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { useLogOut } from "../features/authentication/hooks";
 import { FirebaseAuth } from "../lib/firebase";
-import { useEffect } from "react";
 
 const drawerWidth = 241;
 
@@ -25,7 +25,7 @@ function Root() {
   // console.log("🚀 ~ file: Root.jsx:23 ~ Root ~ currentRoute:", currentRoute)
 
   // Logout user
-  const [signOut, loading, error] = useSignOut(FirebaseAuth);
+  const { logOut, loading, error } = useLogOut();
 
   const navigate = useNavigate();
 
@@ -34,7 +34,8 @@ function Root() {
   console.log("🚀 ~ file: Root.jsx:33 ~ Root ~ user:", user)
 
   const handleLogOut = async () => {
-    const success = await signOut();
+    console.log("INSIDE handleLogOut")
+    const success = await logOut();
     if (success) {
       alert('You have logged out!');
       // TODO: redirect to login page after logged out successfully
