@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Root from '../routes/Root.jsx'
-import Patient from '../routes/Patients.jsx'
-import Appointment from '../routes/Appointment.jsx'
+import Root from '../pages/Root.jsx'
+import Patient from '../pages/Patients.jsx'
+import Appointment from '../pages/Appointment.jsx'
 import AccessibilityIcon from '@mui/icons-material/Accessibility'
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
-import Signup from '../routes/Signup.jsx'
-import Login from '../routes/Login.jsx'
-import RequireAuth from '../components/shared/RequireAuth.jsx'
+import Signup from '../pages/Signup.jsx'
+import Login from '../pages/Login.jsx'
+import RequireAuth from '../shared/RequireAuth.jsx'
 
 export const router = createBrowserRouter([
   {

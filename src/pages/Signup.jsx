@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, Container, TextField, Typography } from "@mui/material"
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { FirebaseAuth } from "../firebase/config";
+import { FirebaseAuth } from "../lib/firebase";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 

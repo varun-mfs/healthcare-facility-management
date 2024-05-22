@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { theme } from './common/theme.js'   // creating materialUI theme
 import { RouterProvider } from 'react-router-dom'
-import { router } from './common/router.jsx'
+import { router } from './routes'
 
 
 console.log('router', router);

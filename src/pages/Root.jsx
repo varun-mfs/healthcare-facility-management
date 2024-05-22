@@ -4,10 +4,10 @@ import {
   Toolbar, Typography
 } from "@mui/material";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { router } from "../common/router";
+import { router } from "../routes/index";
 import { Logout } from "@mui/icons-material";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { FirebaseAuth } from "../firebase/config";
+import { FirebaseAuth } from "../lib/firebase";
 import { useEffect } from "react";
 
 const drawerWidth = 241;

@@ -1,5 +1,5 @@
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { FirebaseAuth } from '../../firebase/config';
+import { FirebaseAuth } from '../lib/firebase/index';
 import { Navigate } from 'react-router-dom';
 import LoadingSpinner from './LoadingSpinner';
 
