@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent, Container, Divider, TextField, Typography } from "@mui/material"
-import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext, useSignInWithEmailAndPassword, useSignInWithGoogleAuth } from "../features/authentication/hooks";
+import { useForm } from "react-hook-form"
 
 const Login = () => {
     const navigate = useNavigate();
@@ -15,35 +15,20 @@ const Login = () => {
     const { signInWithGoogle, gUser, gLoading, gError } = useSignInWithGoogleAuth();
 
     const { user: loggedInUser } = useAuthContext();
-    console.log("🚀 ~ file: Login.jsx:18 ~ Login ~ loggedInUser:", loggedInUser)
-    // if (loggedInUser)
+    const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onBlur" })
 
-        const handleSubmit = (e) => {
-            e.preventDefault();
+    const onSubmit = (e) => {
+        console.log("e", e)
+        // e.preventDefault();
+        const { email, password } = e;
+        // const email = e.target.email.value;
+        // const password = e.target.password.value;
 
-            const email = e.target.email.value;
-            const password = e.target.password.value;
-
-            console.log(email, password)
-            signInWithEmailAndPassword(email, password)
-        }
-
-    console.log("first INSIDE LOGIN!")
-
-    useEffect(() => {
-        if (loading) {
-            return <p>Loading...</p>;
-        }
-
-        if (user || gUser) {
-            navigate("/")
-        }
-    }, [user, navigate, gUser])
+        console.log(email, password)
+        signInWithEmailAndPassword(email, password)
+    }
 
     return (
-
-
-
         <Container sx={{
             display: "flex",
             flexDirection: "column",
@@ -58,19 +43,31 @@ const Login = () => {
                             Login
                         </Typography>
 
-                        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+                        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
                             <TextField
                                 margin="normal"
+                                error={!!errors.email?.message}
+                                helperText={errors.email?.message}
                                 fullWidth
                                 name="email"
                                 label="Email Address"
+                                {...register("email", {
+                                    required: 'Email is required',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: "invalid email address"
+                                    }
+                                })}
                             />
                             <TextField
                                 type="password"
+                                error={!!errors.password?.message}
+                                helperText={errors.password?.message}
                                 margin="normal"
                                 fullWidth
                                 name="password"
                                 label="Password"
+                                {...register("password", { required: 'Password is required', minLength: { value: 6, message: 'Minimum length should be 6 characters' } })}
                             />
                             <Button
                                 type="submit"

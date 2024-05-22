@@ -18,7 +18,7 @@ const CheckAuth = ({ children }) => {
 
   console.log("🚀 ~ file: CheckAuth.jsx:19 ~ CheckAuth ~ location.pathname:", location.pathname)
   // navigate to login page if user is null
-  if (!user && (location.pathname !== '/login' || location.pathname !== '/register')) {
+  if (!user && (location.pathname !== '/login' && location.pathname !== '/register')) {
     console.log("INSIDE IF$$$");
     // TODO: fix this login issue
     return <Navigate to='/login' replace />  // replace: replace the current entry in the history stack instead of adding a new one.
