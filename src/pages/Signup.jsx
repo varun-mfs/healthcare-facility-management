@@ -2,7 +2,7 @@ import { Box, Button, Card, CardContent, Container, TextField, Typography } from
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupWithEmailAndPassword } from "../features/authentication/hooks";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 
 const Signup = () => {
     const {
@@ -13,17 +13,15 @@ const Signup = () => {
     } = useSignupWithEmailAndPassword();
 
     const navigate = useNavigate();
-    
+
     const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onBlur" })
-    
+
 
     const onSubmit = (e) => {
-        e.preventDefault();
-
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-
-        console.log(email, password)
+        // e.preventDefault();
+        const { email, password } = e;
+        // const email = e.target.email.value;
+        // const password = e.target.password.value;
         createUserWithEmailAndPassword(email, password);
     }
 
@@ -90,7 +88,6 @@ const Signup = () => {
                             <Link to="/login" variant="inherit">
                                 {"Already have an account? Login"}
                             </Link>
-
                         </Box>
                     </Box>
                 </CardContent>

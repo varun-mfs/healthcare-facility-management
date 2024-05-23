@@ -9,6 +9,7 @@ import {
   TextField,
   Grid
 } from '@mui/material';
+import { useForm } from "react-hook-form";
 
 const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData }) => {
   const [formData, setFormData] = useState({
@@ -19,65 +20,48 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
     medicalHistory: '',
   });
 
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
+  console.log("patientData************", patientData);
 
-  useEffect(() => {
-    if (patientData) {
-      setFormData(patientData);
-    } else {
-      setFormData({
-        name: '',
-        dateOfBirth: '',
-        email: '',
-        phone: '',
-        medicalHistory: '',
-      });
+  const { register, formState: { errors }, handleSubmit } = useForm({
+    mode: "onBlur",
+    values: patientData ? patientData : {
+      name: '',
+      dateOfBirth: '',
+      email: '',
+      phone: '',
+      medicalHistory: '',
     }
-  }, [patientData]);
+  })
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const onSubmit = (e) => {
+    handleAddOrEditPatient(formData);
+    handleClose();
   };
 
-  const validate = () => {
-    let tempErrors = {};
-    tempErrors.name = formData.name ? '' : 'Name is required';
-    tempErrors.dateOfBirth = formData.dateOfBirth ? '' : 'Date of Birth is required';
-    tempErrors.email = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email) ? '' : 'Email is not valid';
-    tempErrors.phone = formData.phone.length === 10 ? '' : 'Phone number must be 10 digits';
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((error) => error === '');
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      handleAddOrEditPatient(formData);
-      handleClose();
-    }
-  };
+  const onClose = () => {
+    handleClose();
+  }
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>{patientData ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 label="Name"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 required
-                error={Boolean(errors.name)}
-                helperText={errors.name}
+                error={!!errors.name?.message}
+                helperText={errors.name?.message}
+                {...register("name", {
+                  required: 'Name is required',
+                  minLength: { value: 3, message: 'Name must be minimum 3 characters' }
+                })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -85,16 +69,18 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
                 label="Date of Birth"
                 name="dateOfBirth"
                 type="date"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
+                InputProps={{ type: "date", max: new Date() }}
                 variant="outlined"
                 fullWidth
                 required
                 InputLabelProps={{
                   shrink: true,
                 }}
-                error={Boolean(errors.dateOfBirth)}
-                helperText={errors.dateOfBirth}
+                error={!!errors.dateOfBirth?.message}
+                helperText={errors.dateOfBirth?.message}
+                {...register("dateOfBirth", {
+                  required: 'Date of Birth is required',
+                })}
               />
             </Grid>
             <Grid item xs={12}>
@@ -102,38 +88,59 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
                 label="Email"
                 name="email"
                 type="email"
-                value={formData.email}
-                onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 required
-                error={Boolean(errors.email)}
-                helperText={errors.email}
+                error={!!errors.email?.message}
+                helperText={errors.email?.message}
+                {...register("email", {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address"
+                  }
+                })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                InputProps={{
+                  type: "number",
+                  sx: {
+                    '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+                      display: 'none'
+                    },
+                    '& input[type=number]': {
+                      MozAppearance: 'textfield'
+                    },
+                  }
+                }}
                 label="Phone"
                 name="phone"
-                value={formData.phone}
-                onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 required
-                error={Boolean(errors.phone)}
-                helperText={errors.phone}
+                error={!!errors.phone?.message}
+                helperText={errors.phone?.message}
+                {...register("phone", {
+                  required: 'Phone is required',
+                  // valueAsNumber: 'Enter 10 digit phone number',
+                  minLength: { value: 10, message: 'Should be 10 digits number' },
+                  maxLength: { value: 10, message: 'Should be 10 digits number' }
+                })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 label="Medical History & Allergies"
                 name="medicalHistory"
-                value={formData.medicalHistory}
-                onChange={handleChange}
+                // value={formData.medicalHistory}
+                // onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 multiline
                 rows={4}
+                {...register("medicalHistory")}
               />
             </Grid>
             <Grid item xs={12} container justifyContent="flex-end" spacing={2}>
