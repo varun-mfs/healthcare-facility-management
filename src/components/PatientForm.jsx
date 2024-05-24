@@ -12,19 +12,19 @@ import {
 import { useForm } from "react-hook-form";
 
 const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    dateOfBirth: '',
-    email: '',
-    phone: '',
-    medicalHistory: '',
-  });
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   dateOfBirth: '',
+  //   email: '',
+  //   phone: '',
+  //   medicalHistory: '',
+  // });
 
   // const [errors, setErrors] = useState({});
   console.log("patientData************", patientData);
 
   const { register, formState: { errors }, handleSubmit } = useForm({
-    mode: "onBlur",
+    mode: "onChange",
     values: patientData ? patientData : {
       name: '',
       dateOfBirth: '',
@@ -34,8 +34,9 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
     }
   })
 
-  const onSubmit = (e) => {
-    handleAddOrEditPatient(formData);
+  const onSubmit = (data) => {
+    console.log("🚀 ~ file: PatientForm.jsx:41 ~ onSubmit ~ formData:", data)
+    handleAddOrEditPatient(data);
     handleClose();
   };
 
@@ -124,7 +125,6 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
                 helperText={errors.phone?.message}
                 {...register("phone", {
                   required: 'Phone is required',
-                  // valueAsNumber: 'Enter 10 digit phone number',
                   minLength: { value: 10, message: 'Should be 10 digits number' },
                   maxLength: { value: 10, message: 'Should be 10 digits number' }
                 })}
@@ -134,8 +134,6 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
               <TextField
                 label="Medical History & Allergies"
                 name="medicalHistory"
-                // value={formData.medicalHistory}
-                // onChange={handleChange}
                 variant="outlined"
                 fullWidth
                 multiline
@@ -148,7 +146,7 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
                 <Button variant="contained" onClick={handleClose} color="warning">Cancel</Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" onClick={handleSubmit} color="primary">{patientData ? 'Save Changes' : 'Add Patient'}</Button>
+                <Button type='submit' variant="contained" color="primary">{patientData ? 'Save Changes' : 'Add Patient'}</Button>
               </Grid>
             </Grid>
           </Grid>
