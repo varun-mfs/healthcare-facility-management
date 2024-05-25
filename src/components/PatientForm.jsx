@@ -10,18 +10,10 @@ import {
   Grid
 } from '@mui/material';
 import { useForm } from "react-hook-form";
+import { usePatientContext } from '../features/patient/hooks';
 
-const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData }) => {
-  // const [formData, setFormData] = useState({
-  //   name: '',
-  //   dateOfBirth: '',
-  //   email: '',
-  //   phone: '',
-  //   medicalHistory: '',
-  // });
-
-  // const [errors, setErrors] = useState({});
-  console.log("patientData************", patientData);
+const PatientForm = ({ open, handlePatientFormVisibility, handleAddOrEditPatient }) => {
+  const { currentPatient: patientData, setCurrentPatient, addPatient, updatePatient } = usePatientContext();
 
   const { register, formState: { errors }, handleSubmit } = useForm({
     mode: "onChange",
@@ -35,16 +27,23 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
   })
 
   const onSubmit = (data) => {
-    console.log("🚀 ~ file: PatientForm.jsx:41 ~ onSubmit ~ formData:", data)
-    handleAddOrEditPatient(data);
-    handleClose();
+    if (patientData && patientData.id) {
+      // call edit patient api 
+      updatePatient(patientData.id, data)
+    } else {
+      // call add patient api
+      addPatient(data)
+    }
+    onClose();
   };
 
   const onClose = () => {
-    handleClose();
+    setCurrentPatient(null);
+    handlePatientFormVisibility(false);
   }
 
   return (
+    // TODO: DOUBT: check why this onClose is not being called, but working below on cancel button
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{patientData ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
       <DialogContent>
@@ -143,7 +142,7 @@ const PatientForm = ({ open, handleClose, handleAddOrEditPatient, patientData })
             </Grid>
             <Grid item xs={12} container justifyContent="flex-end" spacing={2}>
               <Grid item>
-                <Button variant="contained" onClick={handleClose} color="warning">Cancel</Button>
+                <Button variant="contained" onClick={onClose} color="warning">Cancel</Button>
               </Grid>
               <Grid item>
                 <Button type='submit' variant="contained" color="primary">{patientData ? 'Save Changes' : 'Add Patient'}</Button>

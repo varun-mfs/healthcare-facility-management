@@ -1,37 +1,78 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, TextField, Button, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
+import { usePatientContext } from '../features/patient/hooks';
 
-const PatientList = ({ patients, onEdit, onDelete}) => {
+const PatientList = ({ handlePatientFormVisibility }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
+    const { addPatient, updatePatient, deletePatient, searchPatient, patients, loading, error, setCurrentPatient, currentPatient } = usePatientContext();
 
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
+    const handleAddOrEditPatient = (patient) => {
+        handlePatientFormVisibility(true);
+        // if (!patientData) {
+        //     // Add patient
+        //     addPatient(patient);
+        // } else {
+        //     // Edit patient
+        //     updatePatient(patientData.id, patient);
+        // }
+        // handleClose();
     };
 
     const handleEdit = (patient) => {
-        console.log("🚀 ~ file: PatientList.jsx:16 ~ handleEdit ~ patient:", patient);
-        // Handle edit functionality here
-        onEdit(patient);
-        // console.log('Edit patient:', filteredPatients[index]);
+        setCurrentPatient(patient);
+        handlePatientFormVisibility(true);
     };
 
     const handleDelete = (patient) => {
-        console.log("🚀 ~ file: PatientList.jsx:23 ~ handleDelete ~ patient:", patient);
-        // Handle delete functionality here
-        onDelete(patient)
-        console.log("***********patients", patients);
-        // console.log('Delete patient:', filteredPatients[patient]);
+        deletePatient(patient.id);
     };
 
-    const filteredPatients = patients.filter((patient) =>
-        patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.phone.toLowerCase().includes(searchTerm.toLowerCase())
+    const handleClose = () => {
+        handlePatientFormVisibility(false);
+        setCurrentPatient(null);
+    };
+
+    // Custom debounce function
+    const debounce = (func, delay) => {
+        let timer;
+        return (...args) => {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                func(...args);
+            }, delay);
+        };
+    };
+
+    // Debounced search handler
+    const debouncedSearch = useCallback(
+        debounce((term) => {
+            const lowerCaseTerm = term.toLowerCase();
+            // search patient api call
+            searchPatient(lowerCaseTerm);
+        }, 700), // 300ms delay
+        [patients]
     );
+
+    const handleSearch = (event) => {
+        // call search patient api
+        setSearchTerm(event.target.value);
+        debouncedSearch(event.target.value);
+    };
+
+    // const handleEdit = (patient) => {
+    //     onEdit(patient);
+    // };
+
+    // const handleDelete = (patient) => {
+    //     onDelete(patient)
+    // };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div>
@@ -46,7 +87,7 @@ const PatientList = ({ patients, onEdit, onDelete}) => {
                 </Grid>
                 <Grid item>
                     <Button variant="contained" color="primary"
-                        onClick={() => onEdit()}
+                        onClick={handleAddOrEditPatient}
                     >
                         Add Patient
                     </Button>
@@ -65,7 +106,7 @@ const PatientList = ({ patients, onEdit, onDelete}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredPatients.map((patient, index) => (
+                        {patients?.map((patient, index) => (
                             <TableRow key={index}>
                                 <TableCell>{patient.name}</TableCell>
                                 <TableCell>{patient.dateOfBirth}</TableCell>
