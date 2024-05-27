@@ -5,6 +5,8 @@ import { theme } from './theme/theme.js'   // creating materialUI theme
 import { RouterProvider } from 'react-router-dom'
 import { router } from './routes'
 import { AuthProvider } from './features/authentication/provider/AuthProvider.jsx'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 console.log('router', router);
@@ -18,5 +20,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <RouterProvider router={router} />
       </AuthProvider>
     </ThemeProvider>
+    <ToastContainer autoClose={2000} />
   </React.StrictMode>,
 )

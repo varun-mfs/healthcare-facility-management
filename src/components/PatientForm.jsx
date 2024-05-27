@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import {
-  Container,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
-  Grid
+  Grid,
+  CircularProgress
 } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { usePatientContext } from '../features/patient/hooks';
+import { toast } from 'react-toastify';
+import { TOAST_MESSAGES } from '../constants/';
 
 const PatientForm = ({ open, handlePatientFormVisibility, handleAddOrEditPatient }) => {
-  const { currentPatient: patientData, setCurrentPatient, addPatient, updatePatient } = usePatientContext();
+  const { currentPatient: patientData, setCurrentPatient, addPatient, updatePatient, loading } = usePatientContext();
+  console.log("🚀 ~ file: PatientForm.jsx:17 ~ PatientForm ~ loading:", loading)
 
   const { register, formState: { errors }, handleSubmit } = useForm({
     mode: "onChange",
@@ -26,13 +27,23 @@ const PatientForm = ({ open, handlePatientFormVisibility, handleAddOrEditPatient
     }
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (patientData && patientData.id) {
       // call edit patient api 
-      updatePatient(patientData.id, data)
+      const response = await updatePatient(patientData.id, data)
+      if (response) {
+        toast.success(TOAST_MESSAGES.PATIENT_UPDATE_SUCCESS)
+      } else {
+        toast.error(TOAST_MESSAGES.PATIENT_FAILURE);
+      }
     } else {
       // call add patient api
-      addPatient(data)
+      const response = await addPatient(data)
+      if (response) {
+        toast.success(TOAST_MESSAGES.PATIENT_ADD_SUCCESS)
+      } else {
+        toast.error(TOAST_MESSAGES.PATIENT_FAILURE);
+      }
     }
     onClose();
   };
@@ -145,7 +156,7 @@ const PatientForm = ({ open, handlePatientFormVisibility, handleAddOrEditPatient
                 <Button variant="contained" onClick={onClose} color="warning">Cancel</Button>
               </Grid>
               <Grid item>
-                <Button type='submit' variant="contained" color="primary">{patientData ? 'Save Changes' : 'Add Patient'}</Button>
+                <Button type='submit' variant="contained" color="primary">{patientData ? 'Save Changes' : 'Add Patient'} {loading && <CircularProgress color="info" size={16} />}</Button>
               </Grid>
             </Grid>
           </Grid>

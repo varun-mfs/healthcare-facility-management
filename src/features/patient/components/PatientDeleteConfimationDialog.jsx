@@ -8,7 +8,7 @@ const DeleteConfirmationDialog = ({ open, onClose, onDelete }) => {
                 Are you sure you want to delete this patient? This action cannot be undone.
             </DialogContent>
             <DialogActions>
-                <Button  onClick={onClose} variant="outlined" color="primary">Cancel</Button>
+                <Button onClick={onClose} variant="outlined" color="primary">Cancel</Button>
                 <Button onClick={onDelete} variant="contained" color="error">Delete</Button>
             </DialogActions>
         </Dialog>

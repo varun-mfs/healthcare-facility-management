@@ -9,6 +9,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Logout } from "@mui/icons-material";
 import { useLogOut } from "../features/authentication/hooks";
 import { FirebaseAuth } from "../lib/firebase";
+import { toast } from 'react-toastify';
+import { TOAST_MESSAGES } from "../constants";
+import { LoadingSpinner } from "../shared/components";
 
 const drawerWidth = 241;
 
@@ -31,19 +34,22 @@ function Root() {
 
   // Retrieve and monitor the authentication state from Firebase
   const [user, authStateLoading, authStateError] = useAuthState(FirebaseAuth);
-  console.log("🚀 ~ file: Root.jsx:33 ~ Root ~ user:", user)
 
+  
   const handleLogOut = async () => {
-    console.log("INSIDE handleLogOut")
     const success = await logOut();
     if (success) {
-      alert('You have logged out!');
-      // TODO: redirect to login page after logged out successfully
-      navigate("/login");
+      toast.success(TOAST_MESSAGES.LOGOUT_SUCCESS)
+      navigate("/login"); // redirect to login after logout success
+    } else {
+      toast.success(TOAST_MESSAGES.LOGOUT_FAILURE)
     }
   }
+  
+  if (loading || authStateLoading) {
+    return <LoadingSpinner />
+  }
 
-  // console.log("first", routes)
   return (
     <Box sx={{ display: "flex" }}>
       {/* Right top bar */}

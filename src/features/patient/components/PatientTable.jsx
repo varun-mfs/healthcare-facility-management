@@ -5,33 +5,35 @@ import AddAlarmIcon from '@mui/icons-material/AddAlarm';
 import { usePatientContext } from '../hooks';
 import DeleteConfirmationDialog from './PatientDeleteConfimationDialog';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { TOAST_MESSAGES } from '../../../constants/';
 
 const PatientTable = ({ patients, handlePatientFormVisibility }) => {
     const { deletePatient, setCurrentPatient } = usePatientContext();
     const [patientToDelete, setPatientToDelete] = useState(null);
-    const dialogVisibility = Boolean(patientToDelete)
+    const dialogVisibility = Boolean(patientToDelete);
 
     const handleEdit = (patient) => {
         setCurrentPatient(patient);
         handlePatientFormVisibility(true);
     };
 
+    // show dialog and set patient id to delete
     const handleDelete = (patient) => {
-        // show dialog
         setPatientToDelete(patient.id); // if patient.id is present, show delete dialog
-
-
-        // deletePatient(patient.id);   // call delete api
     };
 
-    const handleDeleteConfirm = () => {
-        deletePatient(patientToDelete);
+    const handleDeleteConfirm = async () => {
+        const response = await deletePatient(patientToDelete);      // call delete api
         setPatientToDelete(null);
+        if (response) {
+            toast.success(TOAST_MESSAGES.PATIENT_DELETE_SUCCESS)
+        } else {
+            toast.error(TOAST_MESSAGES.PATIENT_FAILURE);
+        }
     };
 
     const handleDeleteCancel = () => {
-        console.log("Inside handleDeleteCancel")
-        // 
         setPatientToDelete(null);
     };
 

@@ -2,9 +2,12 @@ import { Box, Button, Card, CardContent, Container, Divider, TextField, Typograp
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext, useSignInWithEmailAndPassword, useSignInWithGoogleAuth } from "../features/authentication/hooks";
 import { useForm } from "react-hook-form"
+import { TOAST_MESSAGES } from "../constants";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () => {
-    const navigate = useNavigate();
     const {
         signInWithEmailAndPassword,
         user,
@@ -17,15 +20,21 @@ const Login = () => {
     const { user: loggedInUser } = useAuthContext();
     const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onBlur" })
 
-    const onSubmit = (e) => {
-        console.log("e", e)
-        // e.preventDefault();
-        const { email, password } = e;
-        // const email = e.target.email.value;
-        // const password = e.target.password.value;
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message);
+        }
+    }, [error])
 
-        console.log(email, password)
-        signInWithEmailAndPassword(email, password)
+    const onSubmit = async (e) => {
+
+        const { email, password } = e;
+
+        const response = await signInWithEmailAndPassword(email, password)
+        console.log("🚀 ~ file: Login.jsx:29 ~ onSubmit ~ response:", response)
+        if (response) {
+            toast.success(TOAST_MESSAGES.LOGIN_SUCCESS)
+        }
     }
 
     return (
@@ -75,7 +84,7 @@ const Login = () => {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Login
+                                Login {(gLoading || loading) && <CircularProgress color="info" size={16} />}
                             </Button>
                             <Divider />
                             <Button

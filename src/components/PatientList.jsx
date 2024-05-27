@@ -2,11 +2,12 @@ import React, { useCallback, useState } from 'react';
 import { Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, TextField, Button, Grid } from '@mui/material';
 import { usePatientContext } from '../features/patient/hooks';
 import { PatientTable } from '../features/patient/components';
+import { LoadingSpinner } from '../shared/components';
 
 const PatientList = ({ handlePatientFormVisibility }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
-    const { addPatient, updatePatient, deletePatient, searchPatient, patients, loading, error, setCurrentPatient, currentPatient } = usePatientContext();
+    const { searchPatient, patients, error, isFetching } = usePatientContext();
 
     // Custom debounce function
     const debounce = (func, delay) => {
@@ -35,7 +36,7 @@ const PatientList = ({ handlePatientFormVisibility }) => {
         debouncedSearch(event.target.value);
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (isFetching) return <LoadingSpinner />;
     if (error) return <div>Error: {error.message}</div>;
 
     return (
@@ -57,7 +58,7 @@ const PatientList = ({ handlePatientFormVisibility }) => {
                     </Button>
                 </Grid>
             </Grid>
-            <PatientTable patients={patients} handlePatientFormVisibility={handlePatientFormVisibility}></PatientTable>
+            { (patients && patients.length > 0) && <PatientTable patients={patients} handlePatientFormVisibility={handlePatientFormVisibility}></PatientTable>}
         </div >
     );
 };
