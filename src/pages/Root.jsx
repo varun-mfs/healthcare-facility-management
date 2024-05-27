@@ -35,7 +35,7 @@ function Root() {
   // Retrieve and monitor the authentication state from Firebase
   const [user, authStateLoading, authStateError] = useAuthState(FirebaseAuth);
 
-  
+
   const handleLogOut = async () => {
     const success = await logOut();
     if (success) {
@@ -45,7 +45,7 @@ function Root() {
       toast.success(TOAST_MESSAGES.LOGOUT_FAILURE)
     }
   }
-  
+
   if (loading || authStateLoading) {
     return <LoadingSpinner />
   }
@@ -78,8 +78,12 @@ function Root() {
         <Toolbar />
         <Divider />
         <List>
-          {routes.map((route) => (
-            <ListItem key={route.id} disablePadding>
+          {routes.map((route) => {
+            // TODO: show appointment
+            if (route.name.includes('Appointments') && import.meta.env.VITE_HIDE_APPOINTMENT === 'true') {
+              return null
+            }
+            return <ListItem key={route.id} disablePadding>
               <ListItemButton
                 selected={route.path && location.pathname === "/" + route.path}
                 LinkComponent={Link}
@@ -91,7 +95,8 @@ function Root() {
                 <ListItemText primary={route.name} />
               </ListItemButton>
             </ListItem>
-          ))}
+          }
+          )}
           {/* Logout button */}
           <Divider />
           <ListItem disablePadding>

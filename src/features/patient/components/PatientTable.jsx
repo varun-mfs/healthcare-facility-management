@@ -2,14 +2,15 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddAlarmIcon from '@mui/icons-material/AddAlarm';
-import { usePatientContext } from '../hooks';
+import { usePatientContext, usePatients } from '../hooks';
 import DeleteConfirmationDialog from './PatientDeleteConfimationDialog';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { TOAST_MESSAGES } from '../../../constants/';
+import { LoadingSpinner } from '../../../shared/components';
 
 const PatientTable = ({ patients, handlePatientFormVisibility }) => {
-    const { deletePatient, setCurrentPatient } = usePatientContext();
+    const { deletePatient, setCurrentPatient, isFetching } = usePatientContext();
     const [patientToDelete, setPatientToDelete] = useState(null);
     const dialogVisibility = Boolean(patientToDelete);
 
@@ -37,6 +38,10 @@ const PatientTable = ({ patients, handlePatientFormVisibility }) => {
         setPatientToDelete(null);
     };
 
+    if (isFetching) {
+        return <LoadingSpinner />
+    }
+
     return (
         <>
             <TableContainer component={Paper}>
@@ -60,7 +65,7 @@ const PatientTable = ({ patients, handlePatientFormVisibility }) => {
                                 <TableCell>{patient.phone}</TableCell>
                                 <TableCell>{patient.medicalHistory}</TableCell>
                                 <TableCell>
-                                    <Button sx={{ marginRight: "5px" }} title='Add Appointment' variant="outlined" color="info" ><AddAlarmIcon /></Button>
+                                    {/* <Button sx={{ marginRight: "5px" }} title='Add Appointment' variant="outlined" color="info" ><AddAlarmIcon /></Button> */}
                                     <Button sx={{ marginRight: "5px" }} title='Edit Patient' variant="outlined" color="secondary" onClick={() => handleEdit(patient)}><EditIcon /></Button>
                                     <Button variant="outlined" title='Delete Patient' color="error" onClick={() => handleDelete(patient)}><DeleteIcon /></Button>
                                 </TableCell>

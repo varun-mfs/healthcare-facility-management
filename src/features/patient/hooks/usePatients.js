@@ -4,13 +4,14 @@ import axios from 'axios';
 const usePatients = () => {
     const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isFetching, setIsFetching] = useState(true);
+    const [isFetching, setIsFetching] = useState(false);
     const [error, setError] = useState(null);
     const baseUrl = import.meta.env.VITE_BASE_URL;
 
     useEffect(() => {
-        fetchPatients();
-    }, []);
+        if (!isFetching && patients.length == 0)
+            fetchPatients();
+    }, [isFetching, patients.length]);
 
     const fetchPatients = async () => {
         try {
@@ -20,7 +21,7 @@ const usePatients = () => {
         } catch (err) {
             setError(err);
         } finally {
-            isFesetIsFetchingching(false);
+            setIsFetching(false);
         }
     };
 
